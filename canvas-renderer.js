@@ -70,6 +70,13 @@ export class CanvasRenderer {
             let currentY = startY;
 
             for (const initialLine of initialLines) {
+                // If the line from the source text is empty, it's an explicit newline.
+                // Just advance Y and continue to the next line.
+                if (initialLine === '') {
+                    currentY += lineSpacing;
+                    continue;
+                }
+
                 const words = initialLine.split(' ');
                 let line = '';
 
@@ -85,9 +92,9 @@ export class CanvasRenderer {
                         line = testLine;
                     }
                 }
-                // Draw the last line of the paragraph
+                // Draw the last remaining part of the line.
                 ctx.fillText(line.trim(), startX, currentY);
-                // Move to the next line for the next paragraph
+                // Advance Y position for the next paragraph (from the next \n).
                 currentY += lineSpacing;
             }
         };
